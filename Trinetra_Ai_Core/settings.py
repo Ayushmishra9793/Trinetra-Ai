@@ -25,9 +25,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # --- Third-party ---
+    'rest_framework',      # Django REST Framework: turns Django into a JSON API
+    'corsheaders',         # Lets the Chrome extension (a different origin) call our API
+
+    # --- Our apps (the 4 folders from the doc) ---
+    'ai_scanner',
+    'web3_profiler',
+    'unified_api',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',   # must sit high in the list
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -37,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'web3_phishing_analyzer_core.urls'
+ROOT_URLCONF = 'Trinetra_Ai_Core.urls'
 
 TEMPLATES = [
     {
@@ -54,18 +64,26 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'web3_phishing_analyzer_core.wsgi.application'
+WSGI_APPLICATION = 'Trinetra_Ai_Core.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
+# ------------------------------------------------------------
+# Database: SQLite is fine for the hackathon/demo. For production
+# swap to Postgres by changing ENGINE + adding credentials.
+# ------------------------------------------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 
 # Password validation
@@ -103,3 +121,38 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+
+# ------------------------------------------------------------
+# WHY CORS matters here:
+# A Chrome extension's background.js runs on a chrome-extension://
+# origin, not http://localhost:8000. Browsers block cross-origin
+# requests by default. CORS_ALLOWED_ORIGINS whitelists the
+# extension so its fetch() calls aren't silently rejected.
+# ------------------------------------------------------------
+CORS_ALLOWED_ORIGINS = [
+    # Replace with your actual extension ID once you load it unpacked:
+    # chrome-extension://<your-extension-id>
+]
+# During early development only, you can use this instead (less secure):
+# CORS_ALLOW_ALL_ORIGINS = True
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        # Throttling matters here: this endpoint is hit on EVERY tab
+        # change by EVERY installed copy of the extension. Without a
+        # rate limit, one runaway client (or a malicious actor) can
+        # hammer the Gemini API and blow through your quota/budget.
+        'anon': '60/min',
+    },
+}
+
+
+

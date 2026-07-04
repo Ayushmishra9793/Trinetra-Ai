@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web3_phishing_analyzer_core.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Trinetra_Ai_Core.settings')
 
 application = get_wsgi_application()
