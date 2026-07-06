@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trinetra AI</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ============================================================
+         HEADER — Logo + Project Name
+         ============================================================ -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-eye" aria-hidden="true">
+          <span class="logo-eye-iris"></span>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-name">TRINETRA AI</h1>
+          <p class="brand-tagline">Zero Trust Web3 Shield</p>
+        </div>
+      </div>
+      <div class="status-dot" id="connection-dot" title="Backend connection status"></div>
+    </header>
+
+    <main class="app-body">
+
+      <!-- ============================================================
+           EMPTY STATE — koi scan abhi tak hua nahi
+           ============================================================ -->
+      <section class="state-panel" id="empty-state">
+        <div class="state-icon">👁️</div>
+        <p class="state-title">No Scan Yet</p>
+        <p class="state-subtitle">Open a website to let Trinetra AI watch over it.</p>
+      </section>
+
+      <!-- ============================================================
+           LOADING STATE — background.js se data ka wait
+           ============================================================ -->
+      <section class="state-panel" id="loading-state" hidden>
+        <div class="scanner-ring">
+          <div class="scanner-ring-core"></div>
+        </div>
+        <p class="state-title">Scanning<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+        <p class="state-subtitle">Analyzing website &amp; wallet signals</p>
+      </section>
+
+      <!-- ============================================================
+           MAIN CONTENT — jab result available ho
+           ============================================================ -->
+      <div class="content-stack" id="results-view" hidden>
+
+        <!-- Current Website Card -->
+        <section class="card current-site-card">
+          <div class="card-label">Current Website</div>
+          <div class="site-url" id="current-url">example.com</div>
+        </section>
+
+        <!-- Website Status Card (overall verdict) -->
+        <section class="card verdict-card" id="verdict-card" data-level="safe">
+          <div class="verdict-icon" id="verdict-icon">✓</div>
+          <div class="verdict-text">
+            <div class="verdict-label" id="verdict-label">SAFE</div>
+            <div class="verdict-sub" id="verdict-sub">No threats detected</div>
+          </div>
+        </section>
+
+        <!-- Unified Threat Score -->
+        <section class="card score-card">
+          <div class="card-label">Unified Threat Score</div>
+          <div class="score-row">
+            <div class="score-number" id="score-number">--</div>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" id="score-bar-fill"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Web2 Security Card -->
+        <section class="card sub-card">
+          <div class="sub-card-header">
+            <span class="sub-card-icon">🌐</span>
+            <span class="sub-card-title">Web2 Security</span>
+            <span class="pill" id="web2-pill">--</span>
+          </div>
+          <div class="sub-card-grid">
+            <div class="mini-stat">
+              <span class="mini-stat-label">HTTPS</span>
+              <span class="mini-stat-value" id="web2-https">--</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">URL Risk</span>
+              <span class="mini-stat-value" id="web2-url-risk">--</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Web3 Security Card -->
+        <section class="card sub-card">
+          <div class="sub-card-header">
+            <span class="sub-card-icon">⛓️</span>
+            <span class="sub-card-title">Web3 Security</span>
+            <span class="pill" id="web3-pill">--</span>
+          </div>
+          <div class="sub-card-grid">
+            <div class="mini-stat">
+              <span class="mini-stat-label">Wallet Age</span>
+              <span class="mini-stat-value" id="web3-wallet-age">--</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Contract</span>
+              <span class="mini-stat-value" id="web3-contract">--</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- AI Explanation Card -->
+        <section class="card explanation-card">
+          <div class="card-label">
+            <span class="sub-card-icon">✨</span> AI Explanation
+          </div>
+          <p class="explanation-text" id="ai-explanation">
+            Trinetra AI hasn't analyzed anything yet.
+          </p>
+        </section>
+
+        <!-- Security Recommendation Card -->
+        <section class="card recommendation-card">
+          <div class="card-label">
+            <span class="sub-card-icon">🛡️</span> Recommendation
+          </div>
+          <p class="recommendation-text" id="recommendation-text">
+            Browse a website to receive a recommendation.
+          </p>
+        </section>
+
+        <!-- Last Scan Time -->
+        <div class="last-scan-row">
+          <span id="last-scan-time">Last scan: --</span>
+        </div>
+
+      </div>
+
+      <!-- ============================================================
+           ERROR STATE — backend unreachable, etc.
+           ============================================================ -->
+      <section class="state-panel state-panel-error" id="error-state" hidden>
+        <div class="state-icon">⚠️</div>
+        <p class="state-title">Connection Issue</p>
+        <p class="state-subtitle" id="error-message">Could not reach Trinetra AI backend.</p>
+      </section>
+
+    </main>
+
+    <!-- ============================================================
+         SCAN AGAIN BUTTON
+         ============================================================ -->
+    <div class="action-bar">
+      <button class="scan-btn" id="scan-again-btn">
+        <span class="scan-btn-icon">⟳</span>
+        <span>Scan Again</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="app-footer">
+      <span>Trinetra AI</span>
+      <span class="footer-dot">•</span>
+      <span id="version-text">v1.0.0</span>
+    </footer>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
