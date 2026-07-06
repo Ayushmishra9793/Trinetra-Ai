@@ -1,30 +1,42 @@
-# ============================================================
-# web3_profiler/logic.py  (Member B's file — STUB for demo/testing
-# purposes. Replace get_wallet_risk() with Member B's real
-# Etherscan/Alchemy-backed implementation.)
-# ============================================================
+from web3 import Web3
+import requests
 
-def get_wallet_risk(address: str) -> dict:
+# 1. API Setup (Aapki Alchemy aur Etherscan keys yahan aayengi)
+ALCHEMY_URL = "https://eth-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_KEY"
+ETHERSCAN_API_KEY = "YOUR_ETHERSCAN_KEY"
+
+# Web3 Node se connect karna
+w3 = Web3(Web3.HTTPProvider(ALCHEMY_URL))
+
+def evaluate_web3_address(target_address):
     """
-    Placeholder. Real version checks Etherscan (contract verified?)
-    and Alchemy (wallet age, tx count) then returns a heuristic score.
+    Trinetra AI: Second Eye (Web3 Profiler)
+    Yeh function address check karega aur Risk Score batayega.
     """
-    if not address:
-        return None
+    # Step 1: Address to correct formate
+    try:
+        checksum_address = w3.to_checksum_address(target_address)
+    except ValueError:
+        return {"risk_level": "CRITICAL", "reason": "Invalid Ethereum Address format."}
 
-    # Fake heuristic just for demo wiring:
-    risk_points = 0
-    if address.lower().endswith("dead"):
-        risk_points = 90
+    address_code = w3.eth.get_code(checksum_address)
+    
+    if address_code == b'':
+        return {"risk_level": "LOW", "reason": "Standard user wallet detected. No contract logic found."}
+    
+    etherscan_url = f"https://api.etherscan.io/api?module=contract&action=getabi&address={checksum_address}&apikey={ETHERSCAN_API_KEY}"
+    response = requests.get(etherscan_url).json()
 
-    status = "SAFE"
-    if risk_points >= 70:
-        status = "CRITICAL"
-    elif risk_points >= 40:
-        status = "SUSPICIOUS"
+    if response['status'] == '1':
+        # Status mean status verified and secure
+        return {"risk_level": "MEDIUM", "reason": "Verified Smart Contract. Proceed with standard caution."}
+    else:
+        # Status 0 means headen formate  (Unverified) -> MAXIMUM DANGER
+        return {"risk_level": "CRITICAL", "reason": "UNVERIFIED Smart Contract Detected! High risk of drainer script."}
 
-    return {
-        "wallet_status": status,
-        "reason": "Unverified contract, wallet created recently" if risk_points >= 70 else "No red flags",
-        "risk_points": risk_points,
-    }
+# --- TEST ---
+if __name__ == "__main__":
+    # Test ke liye ek address
+    test_target = "0xdAC17F958D2ee523a2206206994597C13D831ec7" # Tether (USDT) 
+    result = evaluate_web3_address(test_target)
+    print(result)
