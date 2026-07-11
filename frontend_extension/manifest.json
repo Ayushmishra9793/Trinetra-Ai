@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "Trinetra AI",
+  "version": "1.0.0",
+  "minimum_chrome_version": "114",
+  "description": "Trinetra AI \u2013 Zero Trust Web3 Security Shield. Real-time AI + Web3 threat detection for phishing sites and malicious wallet interactions.",
+
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+
+  "background": {
+    "service_worker": "background/background.js",
+    "type": "module"
+  },
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Trinetra AI",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content/content.js"],
+      "css": ["styles/notification.css"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab"
+  ],
+
+  "host_permissions": [
+    "http://localhost:8000/*"
+  ],
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
+}

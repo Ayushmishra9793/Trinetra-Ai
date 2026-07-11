@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trinetra AI</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body id="popup-body" data-state="idle">
+
+  <!-- ============================================================
+       CHROME: HEADER
+       Identity + live protection status. Slim, fixed, never scrolls.
+       ============================================================ -->
+  <header id="top-nav">
+    <div id="brand-mark">
+      <img id="brand-logo" src="../assets/icons/icon48.png" alt="" width="20" height="20" />
+      <span id="brand-name">Trinetra AI</span>
+    </div>
+
+    <div id="protection-status" role="status" aria-live="polite">
+      <span id="protection-status-dot" aria-hidden="true"></span>
+      <span id="protection-status-label">Protected</span>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       CHROME: SITE IDENTITY STRIP
+       Fused visually to the header -- "what am I looking at" is
+       chrome, not content, so it never competes with the verdict.
+       ============================================================ -->
+  <section id="website-info" aria-label="Current website">
+    <img id="website-favicon" src="" alt="" width="16" height="16" />
+    <div id="website-identity">
+      <span id="website-hostname">&mdash;</span>
+      <span id="website-protocol-badge">HTTPS</span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTENT
+       Only region that grows/shrinks. Everything here fits inside
+       the popup without page-level scroll -- only #ai-analysis-scroll
+       scrolls internally.
+       ============================================================ -->
+  <main id="popup-main">
+
+    <!-- ============================================================
+         HERO: SCORE + RECOMMENDATION, fused into one connected card
+         The "status spine" (colored left edge) is the single signal
+         source for verdict color, echoed by the top accent strip on
+         <body>::before -- score and recommendation read as one
+         continuous statement, not two disconnected boxes.
+         ============================================================ -->
+    <div id="hero-card">
+
+      <section id="threat-score-panel" aria-labelledby="threat-score-heading" aria-live="polite">
+        <h2 id="threat-score-heading" class="sr-only">Threat Score</h2>
+
+        <div id="score-ring-container">
+          <svg id="score-ring" viewBox="0 0 120 120" role="img" aria-labelledby="score-ring-desc">
+            <desc id="score-ring-desc">Circular unified threat score indicator</desc>
+            <circle id="score-ring-track" cx="60" cy="60" r="52"></circle>
+            <circle id="score-ring-progress" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div id="score-ring-content">
+            <span id="score-value">&mdash;</span>
+            <span id="score-max">/100</span>
+          </div>
+        </div>
+
+        <div class="score-summary">
+          <span class="score-summary__eyebrow">Threat Level</span>
+          <p id="verdict-status-text">No Scan Yet</p>
+        </div>
+      </section>
+
+      <section id="recommendation-card" aria-labelledby="recommendation-heading">
+        <h2 id="recommendation-heading" class="sr-only">Recommendation</h2>
+        <span id="recommendation-icon" aria-hidden="true"></span>
+        <p id="recommendation-text">&mdash;</p>
+      </section>
+
+    </div>
+
+    <!-- ============================================================
+         RISK BREAKDOWN
+         Compact evidence rows. Each row keeps a real <label> tied
+         to its <progress> for assistive tech.
+         ============================================================ -->
+    <section id="risk-breakdown-card" aria-labelledby="risk-breakdown-heading">
+      <h2 id="risk-breakdown-heading">Risk Breakdown</h2>
+
+      <div id="ai-risk-row" class="risk-row">
+        <label class="risk-row__label" for="ai-risk-progress">AI Detection</label>
+        <progress id="ai-risk-progress" value="0" max="100" aria-label="AI risk score"></progress>
+        <span id="ai-risk-score" class="risk-row__value">&mdash;</span>
+      </div>
+
+      <div id="web3-risk-row" class="risk-row">
+        <label class="risk-row__label" for="web3-risk-progress">Web3 Wallet</label>
+        <progress id="web3-risk-progress" value="0" max="100" aria-label="Web3 wallet risk score"></progress>
+        <span id="web3-risk-score" class="risk-row__value">Not Connected</span>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         AI EXPLANATION -- the ONLY scrollable region in the popup
+         ============================================================ -->
+    <section id="ai-analysis-card" aria-labelledby="ai-analysis-heading">
+      <div id="ai-analysis-header">
+        <span id="ai-analysis-icon" aria-hidden="true"></span>
+        <h2 id="ai-analysis-heading">AI Analysis</h2>
+      </div>
+
+      <div id="ai-analysis-scroll">
+        <p id="ai-analysis-text">Open any website to see an AI-generated explanation here.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         LAST SCAN + ACTIONS
+         ============================================================ -->
+    <section id="recent-scan" aria-label="Scan status and actions">
+      <span id="last-scan-timestamp">Not scanned yet</span>
+      <div id="action-buttons">
+        <button id="scan-again-btn" type="button">Scan Again</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       CHROME: FOOTER
+       ============================================================ -->
+  <footer id="popup-footer">
+    <span id="footer-tagline">Protected by Trinetra AI</span>
+    <span id="footer-version">v1.0.0</span>
+  </footer>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
