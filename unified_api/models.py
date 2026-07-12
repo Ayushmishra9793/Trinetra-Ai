@@ -2,28 +2,89 @@ from django.db import models
 
 
 class ScanRecord(models.Model):
-    STATUS_CHOICES = [
-        ('SAFE', 'Safe'),
-        ('SUSPICIOUS', 'Suspicious'),
-        ('CRITICAL', 'Critical'),
-    ]
 
-    url = models.URLField(max_length=2048)
-    wallet_address = models.CharField(max_length=100, blank=True, null=True)
+    SCAN_TYPES=(
 
-    ai_risk_score = models.FloatField(help_text="0-100 score from Member A's ML model")
-    web3_risk_status = models.CharField(max_length=20, blank=True, null=True)
-    web3_reason = models.TextField(blank=True, null=True)
+        ("email","Email"),
 
-    unified_threat_score = models.FloatField()
-    final_verdict = models.CharField(max_length=20, choices=STATUS_CHOICES)
+        ("url","URL"),
 
-    gemini_explanation = models.TextField(blank=True, null=True)
+        ("wallet","Wallet"),
 
-    created_at = models.DateTimeField(auto_now_add=True)
+        ("website","Website"),
+
+    )
+
+
+    scan_type=models.CharField(
+
+        max_length=20,
+
+        choices=SCAN_TYPES
+
+    )
+
+
+    input_data=models.TextField()
+
+
+    verdict=models.CharField(
+
+        max_length=50
+
+    )
+
+
+    risk_score=models.FloatField()
+
+
+    confidence=models.FloatField()
+
+
+    model_used=models.CharField(
+
+        max_length=100
+
+    )
+
+
+    explanation=models.TextField(
+
+        blank=True
+
+    )
+
+
+    metadata=models.JSONField(
+
+        default=dict
+
+    )
+
+
+    created_at=models.DateTimeField(
+
+        auto_now_add=True
+
+    )
+
+
+    updated_at=models.DateTimeField(
+
+        auto_now=True
+
+    )
+
 
     class Meta:
-        ordering = ['-created_at']
+
+        ordering=["-created_at"]
+
+        verbose_name="Threat Scan"
+
+        verbose_name_plural="Threat Scans"
+
 
     def __str__(self):
-        return f"{self.url} -> {self.final_verdict} ({self.unified_threat_score})"
+
+        return f"{self.scan_type} | {self.verdict}"
