@@ -1,0 +1,161 @@
+/*
+============================================================
+Trinetra AI Popup Styling
+
+Purpose:
+Chrome Extension Dashboard UI
+
+============================================================
+*/
+
+
+
+body{
+
+
+    width:350px;
+
+
+    font-family:
+
+    Arial,
+    sans-serif;
+
+
+    margin:0;
+
+
+    background:#f5f7fb;
+
+
+}
+
+
+
+
+
+.container{
+
+
+    padding:20px;
+
+
+}
+
+
+
+
+
+h1{
+
+
+    text-align:center;
+
+
+    margin-bottom:5px;
+
+
+}
+
+
+
+
+
+.subtitle{
+
+
+    text-align:center;
+
+
+    color:#666;
+
+
+    font-size:13px;
+
+
+}
+
+
+
+
+
+
+
+.card{
+
+
+    background:white;
+
+
+    margin-top:15px;
+
+
+    padding:15px;
+
+
+    border-radius:12px;
+
+
+    box-shadow:
+
+    0 2px 8px
+
+    rgba(0,0,0,0.1);
+
+
+}
+
+
+
+
+
+.card h3{
+
+
+    margin-top:0;
+
+
+}
+
+
+
+
+
+#totalScans{
+
+
+    font-size:32px;
+
+
+    font-weight:bold;
+
+
+    text-align:center;
+
+
+}
+
+
+
+
+
+
+.history-item{
+
+
+    background:#f1f3f8;
+
+
+    padding:10px;
+
+
+    margin-top:8px;
+
+
+    border-radius:8px;
+
+
+    font-size:13px;
+
+
+}

@@ -17,13 +17,11 @@ Architecture:
 
 Client
   |
-  |
 Unified API
   |
   +---- Email Detector
   |
   +---- URL Detector
-  |
   |
 ScanRecord Database
 ============================================================
@@ -36,7 +34,6 @@ from rest_framework import status
 
 
 from ai_scanner.url_detector.service import scan_url
-
 from ai_scanner.email_detector.service import scan_email
 
 
@@ -50,22 +47,7 @@ class ScanView(APIView):
     """
     Main Threat Scan API.
 
-    Endpoint:
-
     POST /api/v1/scan/
-
-    Example Request:
-
-    {
-        "email":"urgent verify account"
-    }
-
-    OR
-
-    {
-        "url":"http://fake-login.com"
-    }
-
     """
 
 
@@ -73,21 +55,12 @@ class ScanView(APIView):
     def post(self, request):
 
 
-        # -------------------------------------------------
-        # Get input data from request
-        # -------------------------------------------------
-
         data = request.data
 
 
-        url = data.get(
-            "url"
-        )
+        url = data.get("url")
 
-
-        email = data.get(
-            "email"
-        )
+        email = data.get("email")
 
 
 
@@ -97,38 +70,34 @@ class ScanView(APIView):
 
 
 
-        # -------------------------------------------------
-        # Email Detection
-        # -------------------------------------------------
+        # ==========================================
+        # EMAIL SCAN
+        # ==========================================
 
         if email:
 
 
-            email_result = scan_email(
-                email
-            )
+            email_result = scan_email(email)
+
 
 
             email_analysis = {
 
-                "label":
-                email_result.label,
+
+                "label": email_result.label,
 
 
-                "risk_score":
-                float(
+                "risk_score": float(
                     email_result.risk_score
                 ),
 
 
-                "confidence":
-                float(
+                "confidence": float(
                     email_result.confidence
                 ),
 
 
-                "model":
-                email_result.model,
+                "model": email_result.model,
 
 
                 "explanation":
@@ -147,12 +116,12 @@ class ScanView(APIView):
 
 
             risk_scores.append(
-                email_result.risk_score
+                float(email_result.risk_score)
             )
 
 
 
-            # Save Email Scan History
+            # Save Email History
 
             ScanRecord.objects.create(
 
@@ -174,41 +143,38 @@ class ScanView(APIView):
 
                 explanation=email_result.explanation or "",
 
-                metadata=email_result.metadata
+                metadata=email_result.metadata or {}
 
             )
 
 
 
 
-        # -------------------------------------------------
-        # URL Detection
-        # -------------------------------------------------
+
+        # ==========================================
+        # URL SCAN
+        # ==========================================
 
         if url:
 
 
-            url_result = scan_url(
-                url
-            )
+            url_result = scan_url(url)
+
 
 
             url_analysis = {
+
 
                 "label":
                 url_result.label,
 
 
                 "risk_score":
-                float(
-                    url_result.risk_score
-                ),
+                float(url_result.risk_score),
 
 
                 "confidence":
-                float(
-                    url_result.confidence
-                )
+                float(url_result.confidence)
 
             }
 
@@ -219,43 +185,48 @@ class ScanView(APIView):
 
 
             risk_scores.append(
-                url_result.risk_score
+
+                float(
+                    url_result.risk_score
+                )
+
             )
 
 
 
-            # Save URL Scan History
+            # Save URL History
 
-        ScanRecord.objects.create(
+            ScanRecord.objects.create(
 
-            scan_type="email",
+                scan_type="url",
 
-            input_data=email,
+                input_data=url,
 
-            verdict=email_result.label,
+                verdict=url_result.label,
 
-            risk_score=float(
-                email_result.risk_score
-            ),
+                risk_score=float(
+                    url_result.risk_score
+                ),
 
-            confidence=float(
-                email_result.confidence
-            ),
+                confidence=float(
+                    url_result.confidence
+                ),
 
-            model_used=email_result.model,
+                model_used=url_result.model_used,
 
-            explanation=email_result.explanation or "",
+                explanation="",
 
-            metadata=email_result.metadata or {}
+                metadata={}
 
-        )
-
-
+            )
 
 
-        # -------------------------------------------------
-        # Final Unified Risk Score
-        # -------------------------------------------------
+
+
+
+        # ==========================================
+        # FINAL UNIFIED SCORE
+        # ==========================================
 
         if risk_scores:
 
@@ -269,6 +240,7 @@ class ScanView(APIView):
 
 
             final_score = 0
+
 
 
 
@@ -293,24 +265,19 @@ class ScanView(APIView):
 
 
 class ScanHistoryView(APIView):
+
     """
-    Returns previous threat scan history.
-
-    Endpoint:
-
     GET /api/v1/history/
-
     """
 
 
 
-    def get(
-        self,
-        request
-    ):
+    def get(self, request):
 
 
-        records = ScanRecord.objects.all()
+        records = ScanRecord.objects.all().order_by(
+            "-id"
+        )
 
 
 
@@ -321,54 +288,49 @@ class ScanHistoryView(APIView):
         for record in records:
 
 
-            history.append(
-
-                {
+            history.append({
 
 
-                    "id":
-                    record.id,
+                "id":
+                record.id,
 
 
-                    "scan_type":
-                    record.scan_type,
+                "scan_type":
+                record.scan_type,
 
 
-                    "input_data":
-                    record.input_data,
+                "input_data":
+                record.input_data,
 
 
-                    "verdict":
-                    record.verdict,
+                "verdict":
+                record.verdict,
 
 
-                    "risk_score":
-                    record.risk_score,
+                "risk_score":
+                record.risk_score,
 
 
-                    "confidence":
-                    record.confidence,
+                "confidence":
+                record.confidence,
 
 
-                    "model_used":
-                    record.model_used,
+                "model_used":
+                record.model_used,
 
 
-                    "explanation":
-                    record.explanation,
+                "explanation":
+                record.explanation,
 
 
-                    "metadata":
-                    record.metadata,
+                "metadata":
+                record.metadata,
 
 
-                    "created_at":
-                    record.created_at
+                "created_at":
+                record.created_at
 
-
-                }
-
-            )
+            })
 
 
 
