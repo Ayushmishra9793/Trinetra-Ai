@@ -1,0 +1,41 @@
+2026-07-12 16:00:39,077 | INFO | Loading email detection models
+2026-07-12 16:17:46,946 | INFO | Loading email detection models
+2026-07-12 16:26:31,045 | INFO | Training started
+2026-07-12 16:26:31,047 | INFO | Loading dataset...
+2026-07-12 16:26:31,181 | INFO | Preprocessing started
+2026-07-12 16:26:32,616 | INFO | TF-IDF training started
+2026-07-12 16:26:33,622 | INFO | TF-IDF training completed
+2026-07-12 16:26:33,871 | INFO | Training Random Forest
+2026-07-12 16:26:36,510 | INFO | Training Decision Tree
+2026-07-12 16:26:36,618 | INFO | Training Logistic Regression
+2026-07-12 16:26:36,941 | INFO | Models saved successfully
+2026-07-12 16:26:36,944 | INFO | Training completed successfully
+2026-07-12 16:28:13,654 | INFO | Loading email detection models
+2026-07-12 17:20:11,126 | INFO | Loading email detection models
+2026-07-12 17:21:47,429 | INFO | C:\Users\Mishr\Trinetra-Ai\ai_scanner\logic.py changed, reloading.
+2026-07-12 17:21:50,797 | INFO | Loading email detection models
+2026-07-12 17:22:11,876 | INFO | C:\Users\Mishr\Trinetra-Ai\unified_api\views.py changed, reloading.
+2026-07-12 17:22:14,807 | INFO | Loading email detection models
+2026-07-12 17:22:32,432 | INFO | C:\Users\Mishr\Trinetra-Ai\unified_api\views.py changed, reloading.
+2026-07-12 17:22:35,178 | INFO | Loading email detection models
+2026-07-12 17:53:54,430 | INFO | Loading email detection models
+2026-07-12 17:56:33,107 | INFO | C:\Users\Mishr\Trinetra-Ai\unified_api\views.py changed, reloading.
+2026-07-12 17:56:39,267 | INFO | Loading email detection models
+2026-07-12 17:56:47,551 | WARNING | Not Found: /
+2026-07-12 17:58:21,870 | INFO | C:\Users\Mishr\Trinetra-Ai\ai_scanner\logic.py changed, reloading.
+2026-07-12 17:58:25,755 | INFO | Loading email detection models
+2026-07-12 17:58:30,341 | INFO | Loading email detection models
+2026-07-12 17:58:35,974 | INFO | C:\Users\Mishr\Trinetra-Ai\ai_scanner\logic.py changed, reloading.
+2026-07-12 17:58:42,189 | INFO | Loading email detection models
+2026-07-12 17:58:49,477 | INFO | Loading email detection models
+2026-07-12 17:58:55,464 | INFO | C:\Users\Mishr\Trinetra-Ai\ai_scanner\logic.py changed, reloading.
+2026-07-12 17:58:59,990 | INFO | Loading email detection models
+2026-07-12 17:59:06,505 | INFO | Loading email detection models
+2026-07-12 17:59:12,518 | INFO | C:\Users\Mishr\Trinetra-Ai\ai_scanner\logic.py changed, reloading.
+2026-07-12 17:59:18,946 | INFO | Loading email detection models
+2026-07-12 17:59:26,620 | INFO | Loading email detection models
+2026-07-12 17:59:32,342 | INFO | C:\Users\Mishr\Trinetra-Ai\ai_scanner\logic.py changed, reloading.
+2026-07-12 17:59:39,919 | INFO | Loading email detection models
+2026-07-12 17:59:44,826 | INFO | Loading email detection models
+2026-07-12 18:00:04,287 | INFO | C:\Users\Mishr\Trinetra-Ai\ai_scanner\logic.py changed, reloading.
+2026-07-12 18:00:08,733 | INFO | Loading email detection models

@@ -1,0 +1,141 @@
+<!--
+============================================================
+Trinetra AI Popup Dashboard
+
+Purpose:
+------------------------------------------------------------
+Extension user interface
+
+Shows:
+- Total scans
+- Latest threat
+- Risk score
+- Scan history
+
+Data Source:
+chrome.storage.local
+
+============================================================
+-->
+
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+
+    <title>
+        Trinetra AI
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+
+
+
+    <h1>
+        🛡 Trinetra AI
+    </h1>
+
+
+    <p class="subtitle">
+        Zero Trust Security Shield
+    </p>
+
+
+
+
+    <!-- Summary Card -->
+
+
+    <div class="card">
+
+
+        <h3>
+            Total Scans
+        </h3>
+
+
+        <p id="totalScans">
+            0
+        </p>
+
+
+    </div>
+
+
+
+
+
+    <!-- Latest Scan -->
+
+
+    <div class="card">
+
+
+        <h3>
+            Latest Scan
+        </h3>
+
+
+        <div id="latestScan">
+
+            No Scan Available
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- History -->
+
+
+    <div class="card">
+
+
+        <h3>
+            Recent History
+        </h3>
+
+
+        <div id="history">
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+</div>
+
+
+
+<script src="popup.js"></script>
+
+
+</body>
+
+
+</html>
