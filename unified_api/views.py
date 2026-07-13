@@ -1,26 +1,83 @@
-from rest_framework.views import APIView
+"""
+============================================================
+Unified API Views
 
+Responsibilities
+----------------
+1. Receive scan requests
+2. Trigger AI detectors
+3. Store scan history
+4. Return unified response
+
+Supported Scans:
+- Email
+- URL
+
+Architecture:
+
+Client
+  |
+  |
+Unified API
+  |
+  +---- Email Detector
+  |
+  +---- URL Detector
+  |
+  |
+ScanRecord Database
+============================================================
+"""
+
+
+from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
 
 from ai_scanner.url_detector.service import scan_url
 
-
 from ai_scanner.email_detector.service import scan_email
+
+
 from .models import ScanRecord
 
 
 
 
+
 class ScanView(APIView):
+    """
+    Main Threat Scan API.
+
+    Endpoint:
+
+    POST /api/v1/scan/
+
+    Example Request:
+
+    {
+        "email":"urgent verify account"
+    }
+
+    OR
+
+    {
+        "url":"http://fake-login.com"
+    }
+
+    """
 
 
 
-    def post(self,request):
+    def post(self, request):
 
+
+        # -------------------------------------------------
+        # Get input data from request
+        # -------------------------------------------------
 
         data = request.data
-
 
 
         url = data.get(
@@ -36,36 +93,13 @@ class ScanView(APIView):
 
         result = {}
 
+        risk_scores = []
 
 
 
-        if url:
-
-
-            url_result = scan_url(
-                url
-            )
-
-
-            result["url_analysis"] = {
-
-
-                "label":
-                url_result.label,
-
-
-                "risk_score":
-                url_result.risk_score,
-
-
-                "confidence":
-                url_result.confidence
-
-            }
-
-
-
-
+        # -------------------------------------------------
+        # Email Detection
+        # -------------------------------------------------
 
         if email:
 
@@ -75,109 +109,273 @@ class ScanView(APIView):
             )
 
 
-        result["email_analysis"] = {
+            email_analysis = {
 
-            "label": email_result.label,
+                "label":
+                email_result.label,
 
-            "risk_score": float(
+
+                "risk_score":
+                float(
+                    email_result.risk_score
+                ),
+
+
+                "confidence":
+                float(
+                    email_result.confidence
+                ),
+
+
+                "model":
+                email_result.model,
+
+
+                "explanation":
+                email_result.explanation,
+
+
+                "metadata":
+                email_result.metadata
+
+            }
+
+
+
+            result["email_analysis"] = email_analysis
+
+
+
+            risk_scores.append(
+                email_result.risk_score
+            )
+
+
+
+            # Save Email Scan History
+
+            ScanRecord.objects.create(
+
+                scan_type="email",
+
+                input_data=email,
+
+                verdict=email_result.label,
+
+                risk_score=float(
+                    email_result.risk_score
+                ),
+
+                confidence=float(
+                    email_result.confidence
+                ),
+
+                model_used=email_result.model,
+
+                explanation=email_result.explanation or "",
+
+                metadata=email_result.metadata
+
+            )
+
+
+
+
+        # -------------------------------------------------
+        # URL Detection
+        # -------------------------------------------------
+
+        if url:
+
+
+            url_result = scan_url(
+                url
+            )
+
+
+            url_analysis = {
+
+                "label":
+                url_result.label,
+
+
+                "risk_score":
+                float(
+                    url_result.risk_score
+                ),
+
+
+                "confidence":
+                float(
+                    url_result.confidence
+                )
+
+            }
+
+
+
+            result["url_analysis"] = url_analysis
+
+
+
+            risk_scores.append(
+                url_result.risk_score
+            )
+
+
+
+            # Save URL Scan History
+
+        ScanRecord.objects.create(
+
+            scan_type="email",
+
+            input_data=email,
+
+            verdict=email_result.label,
+
+            risk_score=float(
                 email_result.risk_score
             ),
 
-            "confidence": float(
+            confidence=float(
                 email_result.confidence
             ),
 
-            "model": email_result.model,
+            model_used=email_result.model,
 
-            "explanation": email_result.explanation,
+            explanation=email_result.explanation or "",
 
-            "metadata": email_result.metadata
+            metadata=email_result.metadata or {}
 
-        }
-
-
-
-        risks=[]
+        )
 
 
 
-        if "url_analysis" in result:
 
-            risks.append(
-                result["url_analysis"]["risk_score"]
-            )
+        # -------------------------------------------------
+        # Final Unified Risk Score
+        # -------------------------------------------------
 
-
-        if "email_analysis" in result:
-
-            risks.append(
-                result["email_analysis"]["risk_score"]
-            )
+        if risk_scores:
 
 
-
-        if risks:
-
-
-            final_score=max(
-                risks
+            final_score = max(
+                risk_scores
             )
 
 
         else:
 
-            final_score=0
+
+            final_score = 0
 
 
 
-
-        result["final_risk_score"]=final_score
-
+        result["final_risk_score"] = float(
+            final_score
+        )
 
 
 
         return Response(
-            result
+
+            result,
+
+            status=status.HTTP_200_OK
+
         )
-        
+
+
+
+
+
+
+
 class ScanHistoryView(APIView):
+    """
+    Returns previous threat scan history.
+
+    Endpoint:
+
+    GET /api/v1/history/
+
+    """
 
 
-    def get(self, request):
 
-        records = ScanRecord.objects.all().order_by(
-            "-id"
-        )
+    def get(
+        self,
+        request
+    ):
+
+
+        records = ScanRecord.objects.all()
+
 
 
         history = []
 
 
+
         for record in records:
+
 
             history.append(
 
                 {
-                    "id": record.id,
 
-                    "url": record.url,
 
-                    "wallet_address": record.wallet_address,
+                    "id":
+                    record.id,
 
-                    "ai_risk_score": record.ai_risk_score,
 
-                    "web3_risk_status": record.web3_risk_status,
+                    "scan_type":
+                    record.scan_type,
 
-                    "unified_threat_score": record.unified_threat_score,
 
-                    "final_verdict": record.final_verdict,
+                    "input_data":
+                    record.input_data,
 
-                    "gemini_explanation": record.gemini_explanation
+
+                    "verdict":
+                    record.verdict,
+
+
+                    "risk_score":
+                    record.risk_score,
+
+
+                    "confidence":
+                    record.confidence,
+
+
+                    "model_used":
+                    record.model_used,
+
+
+                    "explanation":
+                    record.explanation,
+
+
+                    "metadata":
+                    record.metadata,
+
+
+                    "created_at":
+                    record.created_at
+
 
                 }
 
             )
 
+
+
         return Response(
-            history
+
+            history,
+
+            status=status.HTTP_200_OK
+
         )
