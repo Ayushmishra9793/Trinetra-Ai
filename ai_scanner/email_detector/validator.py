@@ -52,3 +52,33 @@ class EmailValidator:
             raise InvalidInputException(
                 "Email is too large."
             )
+            
+if __name__ == "__main__":
+
+    print("Email Validator Test")
+    print("--------------------")
+
+
+    test_email = """
+    Congratulations!!!
+    Click here to verify your account.
+    """
+
+
+    try:
+
+        EmailValidator.validate(
+            test_email
+        )
+
+        print(
+            "Validation Passed"
+        )
+
+
+    except InvalidInputException as e:
+
+        print(
+            "Validation Failed:",
+            e
+        )

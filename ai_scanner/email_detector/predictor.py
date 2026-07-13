@@ -100,9 +100,11 @@ class EmailPredictor:
             .predict_proba(vector)[0]
         )
 
-        confidence = round(
-            max(probability) * 100,
-            2
+        confidence = float(
+            round(
+                max(probability) * 100,
+                2
+            )
         )
 
         # ----------------------------------------
@@ -141,3 +143,112 @@ class EmailPredictor:
             metadata={}
 
         )
+        
+if __name__ == "__main__":
+
+    predictor = EmailPredictor()
+
+
+    test_email = """
+    URGENT!!!
+    Your bank account will be suspended.
+    Click here immediately to verify:
+    http://fake-login.com
+    """
+
+
+    result = predictor.predict(
+        test_email
+    )
+
+
+    print(result)
+    
+if __name__ == "__main__":
+
+    predictor = EmailPredictor()
+
+
+    phishing_email = """
+    URGENT ALERT!!!
+
+    Your bank account has been suspended.
+
+    Verify your identity immediately.
+
+    Click here:
+    http://fake-login-security.com
+    """
+
+
+    safe_email = """
+    Hello team,
+
+    The project meeting is scheduled tomorrow at 10 AM.
+
+    Please review the attached documents.
+    """
+
+
+    print("\n--- Phishing Test ---")
+
+    result = predictor.predict(
+        phishing_email
+    )
+
+    print(result)
+
+
+
+    print("\n--- Safe Test ---")
+
+    result = predictor.predict(
+        safe_email
+    )
+
+    print(result)
+    
+if __name__ == "__main__":
+
+    predictor = EmailPredictor()
+
+
+    phishing_email = """
+    URGENT!!!
+    Your account will be closed.
+    Verify immediately:
+    http://fake-login.com
+    """
+
+
+    safe_email = """
+    Hello team,
+    The meeting is scheduled tomorrow.
+    Please check the project updates.
+    """
+
+
+    print("\nPHISHING TEST")
+    print("----------------")
+
+    result = predictor.predict(
+        phishing_email
+    )
+
+    print(
+        result.to_dict()
+    )
+
+
+
+    print("\nSAFE TEST")
+    print("----------------")
+
+    result = predictor.predict(
+        safe_email
+    )
+
+    print(
+        result.to_dict()
+    )
+    
