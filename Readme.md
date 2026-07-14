@@ -10,9 +10,9 @@
   <img src="https://img.shields.io/badge/Made%20with-AI%20%7C%20Web3%20%7C%20Extension-orange" alt="made with"/>
 </p>
 
-<h4>🎨 Project Banner</h4>
+<br/>
 
-<p><i>Add your banner image here</i></p>
+<img src="./Banner.png" alt="Trinetra AI Banner" width="100%"/>
 
 </div>
 
