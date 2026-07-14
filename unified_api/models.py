@@ -50,7 +50,9 @@ class ScanRecord(models.Model):
 
     explanation=models.TextField(
 
-        blank=True
+        blank=True,
+        
+        null=True 
 
     )
 

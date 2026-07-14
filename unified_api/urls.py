@@ -1,4 +1,5 @@
 from django.urls import path
+from .models import ScanRecord
 
 from .views import (
 
