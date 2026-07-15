@@ -1,7 +1,49 @@
 /* ============================================================
    Trinetra AI — content.js
-   UNCHANGED — no bug found here.
+   FIXED: content.js now reads chrome.storage.local directly and
+   subscribes to chrome.storage.onChanged. It no longer trusts
+   background.js's gate alone — it enforces "floatingAlerts" at
+   the render site itself, and immediately tears down any banner
+   currently on screen the moment the setting is turned off.
    ============================================================ */
+
+const DEFAULT_SETTINGS = {
+  autoScan: true,
+  scanOnTabChange: true,
+  floatingAlerts: true,
+};
+
+// Local mirror of chrome.storage.local's "trinetra_settings".
+// chrome.storage.local remains the single source of truth; this
+// is just a synced read cache so we don't need an async storage
+// read on every single risk update.
+let cachedSettings = { ...DEFAULT_SETTINGS };
+
+function loadCachedSettings() {
+  chrome.storage.local.get(["trinetra_settings"], (data) => {
+    cachedSettings = { ...DEFAULT_SETTINGS, ...(data.trinetra_settings || {}) };
+  });
+}
+loadCachedSettings();
+
+// Keep cachedSettings in sync the instant popup.js writes a change,
+// and react immediately — this is what makes "Floating Alerts" OFF
+// take effect without reloading the extension or the page.
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "local") return;
+  if (changes.trinetra_settings) {
+    cachedSettings = {
+      ...DEFAULT_SETTINGS,
+      ...(changes.trinetra_settings.newValue || {}),
+    };
+    console.log("Trinetra settings updated (content):", cachedSettings);
+
+    if (!cachedSettings.floatingAlerts) {
+      // Tear down any banner that's already on screen right now.
+      removeBanner();
+    }
+  }
+});
 
 let lastScannedText = "";
 let scanTimeout = null;
@@ -200,6 +242,12 @@ const TIER_COPY = {
 };
 
 function showRiskBanner(tier, result) {
+  // Defense-in-depth: content.js is the final authority on whether it
+  // is allowed to render a floating banner, regardless of what message
+  // it was sent. This is the fix for "content.js must never render
+  // floating notifications" when the setting is off.
+  if (!cachedSettings.floatingAlerts) return;
+
   ensureBannerStyles();
   removeBanner();
 
