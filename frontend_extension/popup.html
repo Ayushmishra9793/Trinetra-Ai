@@ -1,141 +1,298 @@
 <!--
 ============================================================
-Trinetra AI Popup Dashboard
-
-Purpose:
-------------------------------------------------------------
-Extension user interface
-
-Shows:
-- Total scans
-- Latest threat
-- Risk score
-- Scan history
-
-Data Source:
-chrome.storage.local
-
+ TRINETRA AI — Popup Dashboard (unchanged from what you sent —
+ no HTML bug found. Included here only so you have the full
+ matching set alongside the fixed popup.css)
 ============================================================
 -->
-
-
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-
-
-    <title>
-        Trinetra AI
-    </title>
-
-
-    <link
-        rel="stylesheet"
-        href="styles.css"
-    >
-
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=380, initial-scale=1.0" />
+  <title>Trinetra AI — Security Shield</title>
+  <link rel="stylesheet" href="popup.css" />
 </head>
+<body data-theme="dark" data-risk-level="low">
 
+  <a class="skip-link" href="#appMain">Skip to scan results</a>
 
+  <div class="popup-shell">
 
-<body>
+    <header class="app-header">
+      <button
+        type="button"
+        id="headerBackButton"
+        class="icon-button icon-button--back"
+        hidden
+        aria-label="Back to dashboard"
+      >
+        <svg class="icon-button__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M15 5.5 8 12l7 6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
 
+      <div class="brand" id="headerBrand">
+        <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 3 4 6.5v5c0 5 3.3 8.7 8 9.5 4.7-.8 8-4.5 8-9.5v-5L12 3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <p class="brand__name" id="headerTitle">Trinetra AI</p>
+      </div>
 
-<div class="container">
+      <span class="status-pill" id="protectionStatus" role="status" aria-live="polite">
+        <span class="status-pill__dot" aria-hidden="true"></span>
+        <span class="status-pill__label" id="protectionStatusLabel">Protected</span>
+      </span>
+    </header>
 
+    <main id="appMain" class="app-main" data-state="ready" data-view="home">
 
+      <section id="stateLoading" class="state-panel state-panel--loading" hidden aria-labelledby="loadingHeading">
+        <div class="spinner" aria-hidden="true">
+          <span class="spinner__dot"></span>
+          <span class="spinner__dot"></span>
+          <span class="spinner__dot"></span>
+        </div>
+        <p class="state-panel__title" id="loadingHeading">Initializing shield…</p>
+        <p class="state-panel__body">Please wait a moment.</p>
+      </section>
 
-    <h1>
-        🛡 Trinetra AI
-    </h1>
+      <section id="stateScanning" class="state-panel state-panel--scanning" hidden aria-labelledby="scanningHeading" aria-live="polite">
+        <div class="scan-ring" aria-hidden="true">
+          <svg viewBox="0 0 100 100" focusable="false">
+            <circle class="scan-ring__track" cx="50" cy="50" r="42" fill="none" stroke-width="8" />
+            <circle class="scan-ring__sweep" cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" />
+          </svg>
+        </div>
+        <p class="state-panel__title" id="scanningHeading">Scanning this site…</p>
+        <p class="state-panel__body" id="scanningDetail">Checking URL reputation and running the AI model.</p>
+      </section>
 
+      <section id="stateOffline" class="state-panel state-panel--offline" hidden aria-labelledby="offlineHeading">
+        <svg class="state-panel__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 9.5c4.8-4 11.2-4 16 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+          <path d="M7.2 13c3-2.3 6.6-2.3 9.6 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+          <path d="M10.4 16.4a4.6 4.6 0 0 1 3.2 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="12" cy="19.3" r="1" fill="currentColor"/>
+          <path d="M3 3l18 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <p class="state-panel__title" id="offlineHeading">Backend unreachable</p>
+        <p class="state-panel__body">Make sure the Trinetra server is running, then try again.</p>
+        <button type="button" class="button button--primary" id="offlineRetryButton">Retry connection</button>
+      </section>
 
-    <p class="subtitle">
-        Zero Trust Security Shield
-    </p>
+      <section id="stateError" class="state-panel state-panel--error" hidden aria-labelledby="errorHeading">
+        <svg class="state-panel__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="9.25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 7.5v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="12" cy="16.5" r="1" fill="currentColor"/>
+        </svg>
+        <p class="state-panel__title" id="errorHeading">Scan request failed</p>
+        <p class="state-panel__body">The security engine returned an unexpected error.</p>
+        <button type="button" class="button button--primary" id="errorRetryButton">Try again</button>
+      </section>
 
+      <section id="stateEmpty" class="state-panel state-panel--empty" hidden aria-labelledby="emptyHeading">
+        <svg class="state-panel__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 3.5 4.5 7v5.2c0 4.4 3 7.9 7.5 8.3 4.5-.4 7.5-3.9 7.5-8.3V7L12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <p class="state-panel__title" id="emptyHeading">No scan data yet</p>
+        <p class="state-panel__body">Visit a site or run a manual scan to see its security profile here.</p>
+        <button type="button" class="button button--primary" id="emptyScanButton">Scan this site</button>
+      </section>
 
+      <div id="panelReady" class="state-panel state-panel--ready">
 
+        <div id="viewHome" class="view">
 
-    <!-- Summary Card -->
+          <div class="site-row" id="siteRow">
+            <span class="site-row__icon-slot" aria-hidden="true">
+              <img id="siteFavicon" class="site-row__favicon" src="" alt="" width="16" height="16" />
+              <svg id="siteFaviconFallback" class="site-row__favicon-fallback" viewBox="0 0 24 24" hidden focusable="false">
+                <path d="M4 9.5c4.8-4 11.2-4 16 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                <path d="M2.5 12.3c5.7-4.6 13.3-4.6 19 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              </svg>
+            </span>
+            <span class="site-row__domain" id="siteDomain">—</span>
+            <span class="site-row__sep" aria-hidden="true">·</span>
+            <span class="site-row__time" id="lastScanTime">Not scanned yet</span>
+          </div>
 
+          <section class="hero" aria-labelledby="heroHeading">
+            <h2 class="visually-hidden" id="heroHeading">Risk assessment for this site</h2>
 
-    <div class="card">
+            <div class="risk-ring" id="riskMeter" role="img" aria-label="Risk score not yet available">
+              <svg class="risk-ring__svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                <circle class="risk-ring__track" cx="50" cy="50" r="42" fill="none" stroke-width="8" />
+                <circle
+                  class="risk-ring__value"
+                  id="riskMeterArc"
+                  cx="50" cy="50" r="42" fill="none" stroke-width="8"
+                  stroke-linecap="round"
+                  pathLength="100"
+                  stroke-dasharray="0 100"
+                  transform="rotate(-90 50 50)"
+                />
+              </svg>
+              <div class="risk-ring__center">
+                <span class="risk-ring__score" id="riskScoreValue">—</span>
+              </div>
+            </div>
 
+            <p class="hero__verdict" id="verdictText" aria-live="polite">
+              Run a scan to see the AI verdict for this page.
+            </p>
 
-        <h3>
-            Total Scans
-        </h3>
+            <p class="hero__explanation" id="verdictExplanation" hidden></p>
 
+            <p class="hero__meta">
+              <span>Confidence <strong id="verdictConfidence">—</strong></span>
+              <span aria-hidden="true">·</span>
+              <span id="verdictEngine">Engine: —</span>
+            </p>
+          </section>
 
-        <p id="totalScans">
-            0
-        </p>
+          <div class="facts" id="factsList">
+            <div class="facts__row" id="factScanType">
+              <span class="facts__label">Scan type</span>
+              <span class="facts__value" id="factScanTypeValue">—</span>
+            </div>
+            <div class="facts__row" id="factRiskTier">
+              <span class="facts__label">Risk tier</span>
+              <span class="facts__value" id="factRiskTierValue">—</span>
+            </div>
+          </div>
 
-
-    </div>
-
-
-
-
-
-    <!-- Latest Scan -->
-
-
-    <div class="card">
-
-
-        <h3>
-            Latest Scan
-        </h3>
-
-
-        <div id="latestScan">
-
-            No Scan Available
+          <div class="wallet-row" id="walletRow">
+            <svg class="wallet-row__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <rect x="3.5" y="6.5" width="17" height="12" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M3.5 10h17" stroke="currentColor" stroke-width="1.4"/>
+              <circle cx="16.5" cy="14" r="1.15" fill="currentColor"/>
+            </svg>
+            <span id="walletRowText">No wallet connected — monitoring coming soon</span>
+          </div>
 
         </div>
 
+        <div id="viewSettings" class="view" hidden>
+          <form class="settings-form" id="settingsForm">
 
-    </div>
+            <fieldset class="settings-group">
+              <legend class="settings-group__title">Protection</legend>
 
+              <div class="settings-row">
+                <label class="settings-row__label" for="autoScanToggle">
+                  Auto-scan websites
+                  <span class="settings-row__hint">Scan every site automatically on load</span>
+                </label>
+                <input type="checkbox" id="autoScanToggle" class="switch" checked />
+              </div>
 
+              <div class="settings-row">
+                <label class="settings-row__label" for="scanOnTabChangeToggle">
+                  Scan on tab change
+                  <span class="settings-row__hint">Re-scan when you switch to a new tab</span>
+                </label>
+                <input type="checkbox" id="scanOnTabChangeToggle" class="switch" checked />
+              </div>
 
+              <div class="settings-row">
+                <label class="settings-row__label" for="floatingAlertsToggle">
+                  Floating alerts
+                  <span class="settings-row__hint">Show an in-page notification on threats</span>
+                </label>
+                <input type="checkbox" id="floatingAlertsToggle" class="switch" checked />
+              </div>
+            </fieldset>
 
+            <fieldset class="settings-group">
+              <legend class="settings-group__title">Appearance</legend>
 
-    <!-- History -->
+              <div class="settings-row">
+                <label class="settings-row__label" for="themeSelect">Theme</label>
+                <select id="themeSelect" class="select">
+                  <option value="dark" selected>Dark (Default)</option>
+                  <option value="light">Light</option>
+                </select>
+              </div>
+            </fieldset>
 
+            <fieldset class="settings-group">
+              <legend class="settings-group__title">Data</legend>
+              <p class="settings-group__hint">Clears locally cached scan history only. Does not affect server-side records.</p>
+              <button type="button" class="button button--danger-ghost" id="clearHistoryButton">
+                Clear scan history
+              </button>
+            </fieldset>
 
-    <div class="card">
+          </form>
 
-
-        <h3>
-            Recent History
-        </h3>
-
-
-        <div id="history">
-
-
+          <p class="settings-version" id="versionLabel">Trinetra AI · v1.0.0</p>
         </div>
 
+        <div id="viewHistory" class="view" hidden>
+          <ul class="history-list" id="historyList" aria-label="Recent scans">
+          </ul>
 
-    </div>
+          <p class="history-empty" id="historyEmptyState" hidden>No scans recorded yet.</p>
 
+          <template id="historyItemTemplate">
+            <li class="history-item">
+              <span class="history-item__dot" aria-hidden="true"></span>
+              <div class="history-item__info">
+                <p class="history-item__domain"></p>
+                <p class="history-item__meta">
+                  <span class="history-item__verdict"></span>
+                  <span aria-hidden="true">·</span>
+                  <span class="history-item__score"></span>
+                </p>
+              </div>
+              <span class="history-item__time"></span>
+            </li>
+          </template>
+        </div>
 
+      </div>
 
+    </main>
 
-</div>
+    <footer class="app-footer">
+      <button type="button" class="button button--primary button--scan" id="scanAgainButton">
+        <svg class="button__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M19 6.5a7.9 7.9 0 1 0 1.8 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          <path d="M20.5 3.5v4.3h-4.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Scan again</span>
+      </button>
 
+      <nav class="footer-nav" role="tablist" aria-label="Popup sections">
+        <button type="button" class="footer-nav__tab" id="navHomeTab" role="tab" aria-selected="true" aria-controls="viewHome">
+          <svg class="footer-nav__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 3.5 4.5 7v5.2c0 4.4 3 7.9 7.5 8.3 4.5-.4 7.5-3.9 7.5-8.3V7L12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+          <span class="footer-nav__label">Shield</span>
+        </button>
+        <button type="button" class="footer-nav__tab" id="navSettingsTab" role="tab" aria-selected="false" aria-controls="viewSettings">
+          <svg class="footer-nav__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M19.4 13.5a7.6 7.6 0 0 0 .07-1l1.68-1.31-1.6-2.78-1.98.6a7.6 7.6 0 0 0-1.73-1L15.5 5h-3.2l-.34 2.01a7.6 7.6 0 0 0-1.73 1l-1.98-.6-1.6 2.78L8.33 11.5a7.6 7.6 0 0 0 0 2l-1.68 1.31 1.6 2.78 1.98-.6a7.6 7.6 0 0 0 1.73 1l.34 2.01h3.2l.34-2.01a7.6 7.6 0 0 0 1.73-1l1.98.6 1.6-2.78-1.68-1.31Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+          <span class="footer-nav__label">Settings</span>
+        </button>
+        <button type="button" class="footer-nav__tab" id="navHistoryTab" role="tab" aria-selected="false" aria-controls="viewHistory">
+          <svg class="footer-nav__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12.5" r="8" fill="none" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M12 8.5v4.3l3 1.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="footer-nav__label">History</span>
+          <span class="footer-nav__badge" id="historyCountBadge" hidden>0</span>
+        </button>
+      </nav>
+    </footer>
 
+  </div>
 
-<script src="popup.js"></script>
-
-
+  <script src="popup.js" defer></script>
 </body>
-
-
 </html>
