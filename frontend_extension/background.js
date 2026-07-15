@@ -1,6 +1,10 @@
 /* ============================================================
    Trinetra AI — background.js (service worker)
-   UNCHANGED — no bug found here.
+   FIXED: settings are now kept in a live in-memory cache that is
+   synced via chrome.storage.onChanged, instead of being re-read
+   from chrome.storage.local on every single event. This makes
+   chrome.storage.local the single source of truth, with the
+   in-memory cache as a fast, always-fresh mirror of it.
    ============================================================ */
 
 const API_URL = "http://127.0.0.1:8000/api/v1/scan/";
@@ -11,13 +15,40 @@ const DEFAULT_SETTINGS = {
   floatingAlerts: true,
 };
 
-function getSettings() {
+// Live in-memory mirror of chrome.storage.local's "trinetra_settings".
+// Always kept in sync via chrome.storage.onChanged (see listener below).
+let settingsCache = null;
+
+function loadSettingsCache() {
   return new Promise((resolve) => {
     chrome.storage.local.get(["trinetra_settings"], (data) => {
-      resolve({ ...DEFAULT_SETTINGS, ...(data.trinetra_settings || {}) });
+      settingsCache = { ...DEFAULT_SETTINGS, ...(data.trinetra_settings || {}) };
+      resolve(settingsCache);
     });
   });
 }
+
+function getSettings() {
+  if (settingsCache) return Promise.resolve(settingsCache);
+  return loadSettingsCache();
+}
+
+// Prime the cache as soon as the service worker spins up.
+loadSettingsCache();
+
+// Keep the cache correct the instant popup.js writes new settings —
+// this is what makes every toggle affect background.js immediately,
+// with no re-fetch and no stale reads.
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "local") return;
+  if (changes.trinetra_settings) {
+    settingsCache = {
+      ...DEFAULT_SETTINGS,
+      ...(changes.trinetra_settings.newValue || {}),
+    };
+    console.log("Trinetra settings updated (background):", settingsCache);
+  }
+});
 
 function classifyRisk(score) {
   if (typeof score !== "number") return null;
@@ -88,10 +119,19 @@ async function handleScanResult(result, source, tabId) {
   const tier = classifyRisk(risk);
   if (!tier) return;
 
-  if (risk >= 70) {
-    showThreatNotification("High Risk Threat Detected", result);
-  } else if (risk >= 40) {
-    showThreatNotification("Suspicious Activity Detected", result);
+  // Read settings ONCE, up front, before triggering either
+  // notification channel. Both the native OS notification and the
+  // in-page banner message are gated on the SAME settings.floatingAlerts
+  // value, read at the same moment — no code path may fire either one
+  // unconditionally.
+  const settings = await getSettings();
+
+  if (settings.floatingAlerts) {
+    if (risk >= 70) {
+      showThreatNotification("High Risk Threat Detected", result);
+    } else if (risk >= 40) {
+      showThreatNotification("Suspicious Activity Detected", result);
+    }
   }
 
   if (tabId) {
@@ -106,7 +146,6 @@ async function handleScanResult(result, source, tabId) {
     }
   }
 
-  const settings = await getSettings();
   if (tabId && settings.floatingAlerts) {
     chrome.tabs
       .sendMessage(tabId, {
@@ -197,4 +236,5 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 chrome.runtime.onStartup.addListener(() => {
   console.log("Trinetra AI Extension Started");
+  loadSettingsCache();
 });
