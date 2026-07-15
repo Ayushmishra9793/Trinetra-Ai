@@ -418,7 +418,7 @@ Returns every stored `ScanRecord`, most recent first.
 <td>Web3 integration, wallet analysis, blockchain security, Web3 risk engine</td>
 </tr>
 <tr>
-<td><b>Yashendra</b></td>
+<td><b>Yashendra Kumar</b></td>
 <td>Web2 Security Developer</td>
 <td>URL detection, website analysis, threat detection, Web2 security logic</td>
 </tr>
