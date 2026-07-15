@@ -1,272 +1,232 @@
 <div align="center">
 
-<h1>🚀 TRINETRA AI</h1>
+# 🛡️ TRINETRA AI
 
-<h3>AI-Powered Cyber Intelligence Platform</h3>
+### Real-Time AI-Powered Cyber Threat Detection & Protection
 
-<p>
-  <img src="https://img.shields.io/badge/Status-Active-brightgreen" alt="status"/>
-  <img src="https://img.shields.io/badge/License-MIT-blue" alt="license"/>
-  <img src="https://img.shields.io/badge/Made%20with-AI%20%7C%20Web3%20%7C%20Extension-orange" alt="made with"/>
+<p align="center">
+  <img src="assets/banner.png" alt="Trinetra AI Banner" width="100%"/>
 </p>
 
-<br/>
-
-<img src="./Banner.png" alt="Trinetra AI Banner" width="100%"/>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Made with Node.js](https://img.shields.io/badge/Backend-Node.js%20%7C%20Python-green)]()
+[![Status](https://img.shields.io/badge/status-active--development-blue)]()
 
 </div>
 
 ---
 
-<h2>📌 Overview</h2>
+## 🚀 Overview
 
-<p>
-<b>Trinetra AI</b> is an advanced cybersecurity platform that leverages
-<mark><b>Artificial Intelligence</b></mark>, <mark><b>Web3</b></mark>, and
-<mark><b>Browser Extension</b></mark> technologies to detect and prevent
-malicious activities in real-time.
+**TRINETRA AI** is an intelligent cybersecurity system designed to detect malicious threats in real time. It analyzes **URLs, emails, and text content** using AI models and provides instant risk assessment to protect users from phishing, scams, and harmful content.
+
+> 🎯 Built for hackathons with scalability, real-world usability, and AI innovation in mind.
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+|---|---|
+| 🔍 URL Threat Detection | Detects phishing & malicious links |
+| 📧 Email Phishing Detection | NLP-based scam detection |
+| 🧠 Content Analysis | Identifies harmful/suspicious text |
+| ⚡ Real-Time Alerts | Instant feedback to users |
+| 📊 Risk Scoring Engine | Low / Medium / High classification |
+| 🧩 Modular Architecture | Easily scalable system |
+| 🌐 Browser Extension Support | Seamless user experience |
+
+---
+
+## 🏗️ System Architecture
+
+<p align="center">
+  <img src="assets/architecture.png" alt="Architecture Diagram" width="85%"/>
 </p>
 
-<p>
-The system acts as a <b>digital guardian</b>, continuously monitoring user
-interactions, analyzing threats, and providing <b>instant alerts</b> to
-ensure safe browsing.
+### 🔧 Components
+
+- **Frontend / Extension** — Captures user input (URL, email, text)
+- **Backend API** — Central processing system
+- **Input Classification Layer** — Routes input to the correct detection module
+- **AI Detection Modules**
+  - URL Detector
+  - Email Phishing Detector
+  - Content Analyzer
+- **Aggregation Layer** — Combines module outputs
+- **Risk Scoring Engine** — Calculates overall threat level
+- **Database** — Stores scan history
+
+---
+
+## 🔄 Workflow
+
+<p align="center">
+  <img src="assets/workflow.png" width="85%" alt="Workflow Diagram"/>
 </p>
-
----
-
-<h2>✨ Key Features</h2>
-
-<table>
-<tr><td>🔍</td><td><b>AI-Based Threat Detection</b></td><td>Intelligent analysis of suspicious behavior</td></tr>
-<tr><td>🌐</td><td><b>Real-Time Browser Monitoring</b></td><td>Detect threats while browsing</td></tr>
-<tr><td>🔗</td><td><b>Web3 Security Integration</b></td><td>Enhanced decentralized security layer</td></tr>
-<tr><td>⚡</td><td><b>Instant Alerts & Notifications</b></td><td>Immediate response to threats</td></tr>
-<tr><td>🧠</td><td><b>Smart Decision Engine</b></td><td>AI-driven classification of risks</td></tr>
-<tr><td>📊</td><td><b>Dashboard Insights</b></td><td>Visual representation of threats</td></tr>
-</table>
-
----
-
-<h2>🧱 System Architecture</h2>
-
-<p><i>Add your architecture diagram image here</i></p>
-
-<h3>🔹 Components</h3>
-
-<ul>
-  <li><b>Frontend (Web2)</b> — User interface and dashboard</li>
-  <li><b>Backend</b> — API handling, AI processing, data analysis</li>
-  <li><b>Web3 Layer</b> — Blockchain-based validation & security</li>
-  <li><b>Browser Extension</b> — Real-time monitoring and alerts</li>
-  <li><b>External APIs</b> — Threat intelligence sources</li>
-</ul>
-
----
-
-<h2>🔄 Workflow</h2>
 
 ```mermaid
 flowchart TD
-    A[User Visits Website] --> B[Browser Extension Captures Data]
-    B --> C[Send Data to Backend API]
-    C --> D[AI Model Analyzes Threat]
-    D --> E{Is Threat Detected?}
-    E -->|Yes| F[Generate Alert]
-    E -->|No| G[Allow Safe Access]
-    F --> H[Notify User in Real-Time]
-    G --> H
-```
-
-<h3>🔹 Step-by-Step Flow</h3>
-
-<ol>
-  <li>User visits a website</li>
-  <li>Extension captures browsing activity</li>
-  <li>Data is sent to backend server</li>
-  <li>AI model processes and analyzes risk</li>
-  <li>System determines if threat exists</li>
-  <li><b>User receives instant alert</b></li>
-</ol>
-
----
-
-<h2>🛠️ Tech Stack</h2>
-
-<h3>🔹 Frontend</h3>
-<p>
-<img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" />
-<img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" />
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black" />
-<img src="https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black" />
-</p>
-
-<h3>🔹 Backend</h3>
-<p>
-<img src="https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white" />
-<img src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white" />
-<img src="https://img.shields.io/badge/REST%20API-black?logo=fastapi&logoColor=white" />
-</p>
-
-<h3>🔹 AI/ML</h3>
-<p>
-<img src="https://img.shields.io/badge/Machine%20Learning-Models-purple" />
-<img src="https://img.shields.io/badge/Threat%20Detection-Algorithms-red" />
-</p>
-
-<h3>🔹 Web3</h3>
-<p>
-<img src="https://img.shields.io/badge/Blockchain-Integration-3C3C3D?logo=ethereum&logoColor=white" />
-<img src="https://img.shields.io/badge/Smart%20Contracts-if%20implemented-yellow" />
-</p>
-
-<h3>🔹 Extension</h3>
-<p>
-<img src="https://img.shields.io/badge/Chrome%20Extension-APIs-4285F4?logo=googlechrome&logoColor=white" />
-</p>
-
----
-
-<h2>📂 Project Structure</h2>
-
-```
-Trinetra-AI/
-│── frontend/        # Web UI (Web2)
-│── backend/         # API & AI logic
-│── web3/            # Blockchain integration
-│── extension/       # Browser extension
-│── docs/            # Documentation & assets
-│── README.md
+    A[User Visits Website / Inputs Data] --> B[Browser Extension Captures Data]
+    B --> C[Send Data to Unified Backend API]
+    C --> D[Input Classification Layer]
+    D -->|URL| E1[URL Detector]
+    D -->|Email| E2[Email Phishing Detector]
+    D -->|Text| E3[Content Analyzer]
+    E1 --> F[AI Analysis Engine]
+    E2 --> F
+    E3 --> F
+    F --> G[Result Aggregation Layer]
+    G --> H[Risk Scoring Engine]
+    H --> I{Threat Detected?}
+    I -->|Yes| J[Generate Alert + Warning]
+    I -->|No| K[Mark as Safe]
+    J --> L[Store in Database]
+    K --> L
+    L --> M[Response Generation API]
+    M --> N[Send Response to Frontend / Extension]
+    N --> O[Notify User in Real-Time]
 ```
 
 ---
 
-<h2>⚙️ Installation & Setup</h2>
+## ⚙️ Tech Stack
 
-<h3>🔹 Clone Repository</h3>
+| Layer | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Node.js / Python (FastAPI / Flask) |
+| AI/ML | NLP Models, Scikit-learn / Transformers |
+| Database | MongoDB / Firebase |
+| Extension | Chrome Extension APIs |
+
+---
+
+## 📦 Installation
 
 ```bash
 git clone https://github.com/Ayushmishra9793/Trinetra-Ai.git
 cd Trinetra-Ai
 ```
 
-<h3>🔹 Backend Setup</h3>
+### Backend Setup (Node.js)
 
 ```bash
-cd backend
 npm install
 npm start
 ```
 
-<h3>🔹 Frontend Setup</h3>
+### Backend Setup (Python)
 
 ```bash
-cd frontend
-npm install
-npm start
-```
-
-<h3>🔹 Extension Setup</h3>
-
-<ol>
-  <li>Open <b>Chrome → Extensions</b></li>
-  <li>Enable <b>Developer Mode</b></li>
-  <li>Click <b>"Load Unpacked"</b></li>
-  <li>Select the <code>extension/</code> folder</li>
-</ol>
-
----
-
-<h2>🚀 Usage</h2>
-
-<ol>
-  <li>Start backend server</li>
-  <li>Launch frontend dashboard</li>
-  <li>Enable browser extension</li>
-  <li>Visit any website</li>
-  <li><b>Get real-time threat analysis</b></li>
-</ol>
-
----
-
-<h2>📊 Use Cases</h2>
-
-<ul>
-  <li>🛡️ <b>Phishing detection</b></li>
-  <li>🔐 <b>Secure browsing</b></li>
-  <li>🌍 <b>Enterprise cybersecurity</b></li>
-  <li>👨‍💻 <b>Developer security tools</b></li>
-</ul>
-
----
-
-<h2>🎥 Demo</h2>
-
-<p><i>Add your demo video or GIF here</i></p>
-
----
-
-<h2>🧠 Future Scope</h2>
-
-<ul>
-  <li>📱 Mobile application</li>
-  <li>🤖 Advanced AI models</li>
-  <li>🏢 Enterprise-grade solutions</li>
-  <li>🌐 Cross-browser support</li>
-</ul>
-
----
-
-<h2>👨‍💻 Team</h2>
-
-<table>
-<tr><th>Name</th><th>Role</th></tr>
-<tr><td><b>Ayush Mishra</b></td><td>Backend Developer</td></tr>
-<tr><td><b>Yashendra Kumar</b></td><td>Web2 Developer</td></tr>
-<tr><td><b>Pritam</b></td><td>Web3 Developer</td></tr>
-<tr><td><b>Khyati Agrawal</b></td><td>Browser Extension Developer</td></tr>
-</table>
-
----
-
-<h2>🤝 Contributing</h2>
-
-<p>Contributions are welcome! 🎉</p>
-
-```bash
-# Fork the repo
-# Create a new branch
-git checkout -b feature/your-feature
-
-# Commit your changes
-git commit -m "Add some feature"
-
-# Push and submit a Pull Request
-git push origin feature/your-feature
+pip install -r requirements.txt
+python app.py
 ```
 
 ---
 
-<h2>📜 License</h2>
+## 🧪 API Usage
 
-<p>This project is licensed under the <b>MIT License</b>.</p>
+### Scan Endpoint
+
+```
+POST /scan
+```
+
+**Example Request**
+
+```json
+{
+  "type": "url",
+  "data": "http://suspicious-link.com"
+}
+```
+
+**Example Response**
+
+```json
+{
+  "status": "success",
+  "risk_score": 82,
+  "threat_level": "HIGH",
+  "message": "Phishing link detected"
+}
+```
 
 ---
 
-<h2>⭐ Support</h2>
+## 📊 Future Plans / Roadmap
 
-<p>If you like this project, give it a ⭐ on <b>GitHub</b>!</p>
+Planned enhancements to expand Trinetra AI's capabilities beyond the hackathon MVP:
+
+- [ ] 🧠 **Deep Learning Models** — Upgrade detection accuracy with transformer-based classifiers
+- [ ] 🌍 **Global Threat Intelligence Integration** — Sync with open threat feeds (e.g. PhishTank, VirusTotal, AbuseIPDB)
+- [ ] 📱 **Mobile App Version** — Native Android/iOS apps for on-the-go protection
+- [ ] 🗣️ **Voice-Based Threat Detection** — Analyze voice messages/calls for scam patterns
+- [ ] 🔗 **Blockchain-Based Threat Logging** — Immutable, tamper-proof scan history
+- [ ] 🧬 **Self-Learning AI** — Continuous model retraining from user feedback loops
+- [ ] 🧑‍💻 **Admin Dashboard with Analytics** — Visualize threat trends, scan volume, and false-positive rates
+- [ ] 🔔 **Advanced Notification System** — SMS/Email alerts for high-risk detections
+- [ ] 🌐 **Multi-Language Support** — Extend phishing/content detection beyond English
+- [ ] 🏢 **Enterprise API Tier** — Rate-limited, authenticated API for business integrations
+- [ ] 🧪 **Sandboxed URL Preview** — Safely render suspicious pages in an isolated environment before full analysis
+- [ ] 📈 **Model Explainability Layer** — Show *why* a URL/email/text was flagged, not just the score
 
 ---
 
-<h2>📬 Contact</h2>
+## 🎯 Hackathon Edge
 
-<p>For queries or collaboration: 📧 <i>Add your email here</i></p>
+- ✔ Real-world problem solving
+- ✔ Scalable architecture
+- ✔ AI-powered decision making
+- ✔ Clean UI + extension usability
+- ✔ Strong visual documentation (diagrams)
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📜 License
+
+Distributed under the **MIT License**. See `LICENSE` for more information.
+
+---
+
+## 🧑‍💻 Team
+
+| Name | Role |
+|---|---|
+| Ayush Mishra | Backend Developer |
+| Yashendra Kumar | Web2 Developer |
+| Surendra Pratap Vishwakarma | Web3 Developer |
+| Khyati Agrawal | Browser Extension Developer |
+
+Contributors welcome!
+
+---
+
+## ⭐ Support
+
+If you like this project:
+
+👉 Star ⭐ the repo
+👉 Share it
+👉 Contribute
 
 ---
 
 <div align="center">
 
-<h2>🔥 "Trinetra AI – See Beyond Threats."</h2>
+*"In a world full of cyber threats, Trinetra AI acts as your third eye 👁️ — always watching, always protecting."*
 
 </div>
