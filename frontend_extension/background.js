@@ -60,7 +60,7 @@ function classifyRisk(score) {
 async function sendScanRequest(payload) {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), 40000);
 
     const response = await fetch(API_URL, {
       method: "POST",
