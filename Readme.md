@@ -2,21 +2,6 @@
 
 <img src="assets/Banner.png" width="100%" alt="Trinetra AI Banner"/>
 
-<br>
-
-<h1>🛡️ TRINETRA AI</h1>
-<h3>Zero Trust Web3 Security Shield</h3>
-
-<p>
-  <img src="https://img.shields.io/badge/Status-Active%20Development-brightgreen" alt="status"/>
-  <img src="https://img.shields.io/badge/License-MIT-blue" alt="license"/>
-  <img src="https://img.shields.io/badge/Backend-Django%206%20%2B%20DRF-092E20?logo=django&logoColor=white" alt="django"/>
-  <img src="https://img.shields.io/badge/Extension-Manifest%20V3-4285F4?logo=googlechrome&logoColor=white" alt="manifest v3"/>
-  <img src="https://img.shields.io/badge/AI-scikit--learn-F7931E?logo=scikitlearn&logoColor=white" alt="ai"/>
-  <img src="https://img.shields.io/badge/Web3-web3.py-3C3C3D?logo=ethereum&logoColor=white" alt="web3"/>
-</p>
-
-<br/>
 
 
 </div>
