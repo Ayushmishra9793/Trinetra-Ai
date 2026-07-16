@@ -1,40 +1,13 @@
 """
-============================================================
-Custom Exceptions
-
-Purpose
--------
-Keeps the project clean by avoiding generic
-Exception everywhere.
-============================================================
+=========================================================
+Shared Exceptions
+=========================================================
 """
 
-
 class TrinetraException(Exception):
-    """Base exception for Trinetra."""
-
+    """Base exception for all Trinetra errors."""
     pass
-
-
-class DatasetException(TrinetraException):
-    """Dataset related errors."""
-
-    pass
-
-
-class ModelLoadException(TrinetraException):
-    """Raised when model loading fails."""
-
-    pass
-
-
-class PredictionException(TrinetraException):
-    """Raised when prediction fails."""
-
-    pass
-
 
 class InvalidInputException(TrinetraException):
-    """Raised for invalid user input."""
-
+    """Raised when input validation fails."""
     pass

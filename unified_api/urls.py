@@ -1,35 +1,7 @@
 from django.urls import path
-from .models import ScanRecord
-
-from .views import (
-
-    ScanView,
-
-    ScanHistoryView
-
-)
-
+from .views import ScanView, ScanHistoryView
 
 urlpatterns = [
-
-    path(
-
-        "v1/scan/",
-
-        ScanView.as_view(),
-
-        name="scan"
-
-    ),
-
-    path(
-
-        "v1/history/",
-
-        ScanHistoryView.as_view(),
-
-        name="history"
-
-    ),
-
+    path("scan/", ScanView.as_view(), name="scan"),
+    path("history/", ScanHistoryView.as_view(), name="history"),
 ]

@@ -1,41 +1,23 @@
 """
-============================================================
-Central Logger
-
-Every module uses the same logger.
-
-Email Detector
-URL Detector
-Wallet
-Website
-
-all log here.
-============================================================
+=========================================================
+Centralized Logger
+=========================================================
 """
-
 import logging
 from pathlib import Path
 
-
-LOG_DIR = Path(__file__).resolve().parent.parent / "logs"
-
-LOG_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
-
+# Log directory path
+LOG_DIR = Path(__file__).resolve().parent.parent.parent / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 LOG_FILE = LOG_DIR / "trinetra.log"
 
-
 logging.basicConfig(
-
     level=logging.INFO,
-
-    filename=LOG_FILE,
-
-    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-
+    format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_FILE),
+        logging.StreamHandler()
+    ]
 )
-
 
 logger = logging.getLogger("Trinetra")

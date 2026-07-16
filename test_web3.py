@@ -1,3 +1,8 @@
+"""
+=========================================================
+Trinetra AI: Web3 Engine Live Test
+=========================================================
+"""
 import os
 from dotenv import load_dotenv
 
@@ -22,8 +27,9 @@ def test_trinetra_web3():
         result1 = evaluate_web3_address(usdt_address)
         print("✅ WEB3 SCAN SUCCESSFUL!")
         print(f"   -> Target Address: {usdt_address}")
-        print(f"   -> Risk Level:     {result1.get('risk_level')}")
-        print(f"   -> Reason/Details: {result1.get('reason')}")
+        print(f"   -> Status:         {result1.get('status')}")
+        print(f"   -> Risk Score:     {result1.get('risk_score')}")
+        print(f"   -> Details:        {result1.get('message')}")
     except Exception as e:
         print(f"\n❌ WEB3 SCAN FAILED: {str(e)}")
 
@@ -32,14 +38,15 @@ def test_trinetra_web3():
     # ---------------------------------------------------------
     print("\n" + "-"*70)
     print("[TEST 2] Scanning Burner/Zero Balance Wallet...")
-    burner_address = "0x89D24A6b4CcB1B6fAA2625fE562bDD9a23260359"
+    burner_address = "0x32Be343B94f860124dC4fEe278FDCBD38C102D88"
     
     try:
         result2 = evaluate_web3_address(burner_address)
         print("✅ WEB3 SCAN SUCCESSFUL!")
         print(f"   -> Target Address: {burner_address}")
-        print(f"   -> Risk Level:     {result2.get('risk_level')}")
-        print(f"   -> Reason/Details: {result2.get('reason')}")
+        print(f"   -> Status:         {result2.get('status')}")
+        print(f"   -> Risk Score:     {result2.get('risk_score')}")
+        print(f"   -> Details:        {result2.get('message')}")
     except Exception as e:
         print(f"\n❌ WEB3 SCAN FAILED: {str(e)}")
 

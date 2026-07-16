@@ -3,20 +3,14 @@
 URL Detector Configuration
 =========================================================
 """
+import os
+from dotenv import load_dotenv
 
-from pathlib import Path
+load_dotenv()
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
+if not GEMINI_API_KEY:
+    raise ValueError("⚠️ GEMINI_API_KEY is missing in your .env file!")
 
-BASE_DIR = Path(__file__).resolve().parent
-
-
-MODEL_DIR = BASE_DIR / "models"
-
-
-RF_MODEL = MODEL_DIR / "rf_model.pkl"
-
-DT_MODEL = MODEL_DIR / "dt_model.pkl"
-
-LR_MODEL = MODEL_DIR / "lr_model.pkl"
-
-TFIDF_MODEL = MODEL_DIR / "tfidf_vectorizer.pkl"
+os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
+MODEL_NAME = "gemini-3.5-flash"

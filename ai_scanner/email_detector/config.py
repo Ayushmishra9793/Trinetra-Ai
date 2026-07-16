@@ -10,18 +10,19 @@ only this file.
 =========================================================
 """
 
-from pathlib import Path
+import os
+from dotenv import load_dotenv
 
+# .env file load karein
+load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-MODEL_DIR = BASE_DIR / "models"
+if not GEMINI_API_KEY:
+    raise ValueError("⚠️ GEMINI_API_KEY is missing in your .env file!")
 
+# Set environment variable so the new Client() can pick it up automatically
+os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 
-RF_MODEL = MODEL_DIR / "rf_model.pkl"
-
-DT_MODEL = MODEL_DIR / "dt_model.pkl"
-
-LR_MODEL = MODEL_DIR / "lr_model.pkl"
-
-TFIDF = MODEL_DIR / "tfidf_vectorizer.pkl"
+# Updated to the latest model as per your docs!
+MODEL_NAME = "gemini-3.5-flash"

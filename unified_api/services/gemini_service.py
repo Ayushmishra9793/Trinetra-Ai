@@ -3,7 +3,7 @@
 # ------------------------------------------------------------
 # NOTE: the old `google-generativeai` package is fully deprecated
 # (Google ended all support for it). This uses the current
-# official `google-genai` SDK instead. Model used: gemini-2.5-flash-lite
+# official `google-genai` SDK instead. Model used: gemini-3.5-flash-lite
 # — cheap, fast, stable GA model, good fit for a one-sentence warning.
 #
 # WHY we only call Gemini when the score is already risky:

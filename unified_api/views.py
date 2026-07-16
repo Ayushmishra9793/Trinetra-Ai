@@ -156,7 +156,11 @@ class ScanView(APIView):
                 "youtube.com", 
                 "linkedin.com",
                 "hackhalt.org",
-                "theangaarbatch.in"
+                "theangaarbatch.in",
+                "adhar.org.in",
+                "gov.org",
+                ".gov.in",
+
             ]
             is_trusted = any(domain in lower_url for domain in TRUSTED_DOMAINS)
 
@@ -169,14 +173,14 @@ class ScanView(APIView):
             elif has_form and not is_trusted:
                 # Form mila AUR site trusted nahi hai -> Medium Risk
                 final_label = "SUSPICIOUS"
-                final_score = max(45.0, min(ai_score, 68.0)) 
+                final_score = max(45.0, min(ai_score, 60.0)) 
                 
             else:
                 # Kuch suspicious nahi mila, YA phir site Trusted hai -> SAFE
                 final_label = "SAFE"
                 final_score = min(ai_score, 35.0)
                 
-                # Agar trusted site hai, toh risk score ekdum low (15.0) kar do
+                # Agar trusted site hai, toh risk score ekdum low (25.0) kar do
                 if is_trusted:
                     final_score = min(final_score, 25.0)
 
